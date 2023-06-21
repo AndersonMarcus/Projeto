@@ -1,13 +1,11 @@
-
+import logging
 import sys
-import threading
-import time
-
+from threading import Timer
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtWidgets, uic
 from finance import Ui_MainWindow
 from termcolor import colored
-import time
+from time import sleep
 import mysql.connector
 
 
@@ -21,21 +19,22 @@ class financas(QMainWindow):
       self.valor_total = 0
       self.valor_saiu = 0
       self.linha = 0
-      self.apagar()
+      #self.apagar()
       self.connect()
 
-    def timer(self):
-        tempo = threading.Timer(5, self.apagar())
-        tempo.start()
+    def apagar(self):
+        self.ui.frame_error.hide()
 
     def connect(self):
         try:
             self.connection = mysql.connector.connect(host='localhost', database='sistema', user='root', password='1')
-        except:
+        except Exception:
             self.ui.frame_error.show()
-
             self.ui.label_error.setText("Erro ao conectar no Banco de dados")
-            self.timer()
+
+
+
+
 
 
 
@@ -56,8 +55,8 @@ class financas(QMainWindow):
                 print("Conexão ao MySQL foi Finalizada")'''
 
 
-    def apagar(self):
-        self.ui.frame_error.hide()
+
+
         
     def adicionar(self):
         self.descricao = self.ui.lineEdit.text()
